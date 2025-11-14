@@ -17,35 +17,39 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
       - name: Show Git info
         run: |
           echo "Branch: ${{ github.ref }}"
           echo "Commit: ${{ github.sha }}"
           git log -1 --oneline
+
       - name: Cache node modules
         uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
+      
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
-      - name: Install dependencies
-        run: npm ci
-      - name: List installed packages
-        run: npm list --depth=0
-      - name: Lint
-        run: npm run lint | tee lint.log
-      - name: Show lint log
-        if: failure()
-        run: cat ./lint.log || echo "No lint log found."
-      - name: Test
-        run: npm test | tee test-results.log
-      - name: Show test results
-        if: always()
-        run: cat ./test-results.log || echo "No test results log found."
+
+      - name: Install dependencies, Run Lint and Tests
+        run: |
+          npm install
+          npm list --depth=0
+          npm run lint | tee lint.log
+          cat ./lint.log || echo "No lint log found."
+          npm test | tee test-results.log
+          cat ./test-results.log || echo "No test results log found."
+
+      - name: Build
+        run: |
+          npm run build
+          ls -lh build/ || echo "No build folder found."
+
       - name: Workflow Results Summary
         if: always()
         run: |
