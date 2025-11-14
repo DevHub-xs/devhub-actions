@@ -12,41 +12,9 @@ jobs:
   deploy:
     name: Deploy DevHub Portal
     runs-on: ubuntu-latest
-    env:
-      CI: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Show Git info
-        run: |
-          echo "Branch: ${{ github.ref }}"
-          echo "Commit: ${{ github.sha }}"
-          git log -1 --oneline
-
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ inputs.node-version }}
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: List installed packages
-        run: npm list --depth=0
-
-      - name: Build Angular app
-        run: npm run build | tee build.log
-
-      - name: Show build output
-        run: ls -lh dist/ || echo "No dist folder found."
 
       - name: Deploy (placeholder)
         run: echo "Deploy step here (e.g., upload to S3, static host, or Docker push)" | tee deploy.log

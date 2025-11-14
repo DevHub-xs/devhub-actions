@@ -12,25 +12,10 @@ jobs:
   ci:
     name: CI DevHub API
     runs-on: ubuntu-latest
-    env:
-      CI: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Show Git info
-        run: |
-          echo "Branch: ${{ github.ref }}"
-          echo "Commit: ${{ github.sha }}"
-          git log -1 --oneline
 
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
-      
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -40,15 +25,12 @@ jobs:
         run: |
           npm install
           npm list --depth=0
-          npm run lint | tee lint.log
-          cat ./lint.log || echo "No lint log found."
-          npm test | tee test-results.log
-          cat ./test-results.log || echo "No test results log found."
+          npm run lint
+          npm run test
 
       - name: Build
         run: |
           npm run build
-          ls -lh build/ || echo "No build folder found."
 
       - name: Workflow Results Summary
         if: always()
