@@ -30,7 +30,3 @@ jobs:
         if: always()
         run: |
           echo "## DevHub API CI Results" >> $GITHUB_STEP_SUMMARY
-          echo "### Lint Results" >> $GITHUB_STEP_SUMMARY
-          cat lint.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "No lint log found." >> $GITHUB_STEP_SUMMARY
-          echo "### Test Results" >> $GITHUB_STEP_SUMMARY
-          cat test-results.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "No test results log found." >> $GITHUB_STEP_SUMMARY
