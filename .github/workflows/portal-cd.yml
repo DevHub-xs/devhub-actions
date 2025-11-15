@@ -7,6 +7,11 @@ on:
         required: false
         type: string
         default: '20.x'
+    secrets:
+      render-api-key:
+        required: true
+      render-service-id:
+        required: true
 
 jobs:
   deploy:
@@ -16,10 +21,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy (placeholder)
-        run: echo "Deploy step here (e.g., upload to S3, static host, or Docker push)"
+      - name: Deploy to Render
+        env:
+          RENDER_API_KEY: ${{ secrets.render-api-key }}
+          RENDER_SERVICE_ID: ${{ secrets.render-service-id }}
+        run: |
+          echo "Deploying to Render..."
+          curl -X POST \
+            "https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys" \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{}'
 
       - name: Workflow Results Summary
         if: always()
         run: |
           echo "## DevHub Portal CD Results" >> $GITHUB_STEP_SUMMARY
+          echo "Deployed to Render service: ${{ secrets.render-service-id }}" >> $GITHUB_STEP_SUMMARY

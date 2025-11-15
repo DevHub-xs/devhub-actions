@@ -23,8 +23,29 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
+          NODE_ENV=development npm install --include=dev
           npm list --depth=0
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: SAST Analysis
+        run: |
+          echo "## SAST Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "Placeholder for SAST tool (e.g., SonarCloud, Semgrep, CodeQL)" >> $GITHUB_STEP_SUMMARY
+          echo "SAST analysis will be configured here"
+
+      - name: DAST Analysis
+        run: |
+          echo "## DAST Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "Placeholder for DAST tool (e.g., OWASP ZAP, Burp Suite, Nikto)" >> $GITHUB_STEP_SUMMARY
+          echo "DAST analysis will be configured here"
+
+      - name: SCA Analysis
+        run: |
+          echo "## SCA Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "Placeholder for SCA tool (e.g., Snyk, OWASP Dependency-Check, npm audit)" >> $GITHUB_STEP_SUMMARY
+          echo "SCA analysis will be configured here"
 
       - name: Workflow Results Summary
         if: always()
