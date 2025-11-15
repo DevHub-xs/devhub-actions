@@ -26,10 +26,6 @@ jobs:
           npm install
           npm list --depth=0
 
-      - name: Build
-        run: |
-          npm run build
-
       - name: Workflow Results Summary
         if: always()
         run: |
