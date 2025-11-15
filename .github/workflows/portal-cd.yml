@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy (placeholder)
-        run: echo "Deploy step here (e.g., upload to S3, static host, or Docker push)" | tee deploy.log
+        run: echo "Deploy step here (e.g., upload to S3, static host, or Docker push)"
 
       - name: Workflow Results Summary
         if: always()
