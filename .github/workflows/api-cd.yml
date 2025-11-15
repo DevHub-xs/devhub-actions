@@ -1,0 +1,40 @@
+name: DevHub API CD
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: false
+        type: string
+        default: '20.x'
+      docker-image-name:
+        required: true
+        type: string
+      dockerhub-username:
+        required: true
+        type: string
+      dockerhub-token:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    name: Deploy DevHub API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy (placeholder)
+        run: echo "Deploy step here (e.g., SSH, cloud CLI, etc.)" | tee deploy.log
+
+      - name: Workflow Results Summary
+        if: always()
+        run: |
+          echo "## DevHub API CD Results" >> $GITHUB_STEP_SUMMARY
+          echo "### Docker Build Log" >> $GITHUB_STEP_SUMMARY
+          cat docker-build.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "No Docker build log found." >> $GITHUB_STEP_SUMMARY
+          echo "### Docker Push Log" >> $GITHUB_STEP_SUMMARY
+          cat docker-push.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "No Docker push log found." >> $GITHUB_STEP_SUMMARY
+          echo "### Deploy Log" >> $GITHUB_STEP_SUMMARY
+          cat deploy.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "No deploy log found." >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,29 @@
+name: DevHub Portal CD
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: false
+        type: string
+        default: '20.x'
+
+jobs:
+  deploy:
+    name: Deploy DevHub Portal
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy (placeholder)
+        run: echo "Deploy step here (e.g., upload to S3, static host, or Docker push)" | tee deploy.log
+
+      - name: Workflow Results Summary
+        if: always()
+        run: |
+          echo "## DevHub Portal CD Results" >> $GITHUB_STEP_SUMMARY
+          echo "### Build Output" >> $GITHUB_STEP_SUMMARY
+          ls -lh dist/ >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "No dist folder found." >> $GITHUB_STEP_SUMMARY
+          echo "### Deploy Log" >> $GITHUB_STEP_SUMMARY
+          cat deploy.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "No deploy log found." >> $GITHUB_STEP_SUMMARY
